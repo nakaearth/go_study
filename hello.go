@@ -12,6 +12,14 @@ c        = "test3"
 
 var i int
 
+func hello() {
+  f.Println("ほげ")
+}
+
+func plus_one(i int) int {
+  return i + 1;
+}
+
 func main() {
   const Hello string = "Bye bye"
 
@@ -36,4 +44,8 @@ func main() {
       f.Println("その他")
     }
   }
+
+  hello()
+
+  f.Println(plus_one(4))
 }
