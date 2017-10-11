@@ -11,6 +11,10 @@ func MainPage() echo.HandlerFunc {
     // }
     return func(c echo.Context) error {
         username := c.Param("username")    //プレースホルダusernameの値取り出し
-        return c.String(http.StatusOK, "Hello World " + username)
+        jsonMap := map[string]string{
+          "name": username,
+          "age": "100",
+        }
+        return c.JSON(http.StatusOK, jsonMap)
     }
 }
