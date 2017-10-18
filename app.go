@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 	"net/http"
 	"strconv" // 文字列を数値に変換
@@ -26,11 +26,15 @@ func main() {
 		return c.JSON(http.StatusOK, getUser(id))
 	})
 
+  e.GET("/users", func(c echo.Context) error {
+    userList()
+    return c.JSON(http.StatusOK, getUser(1))
+  })
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func getUserList() {
-	db, err := sql.Open("mysql", "root:@/my_database")
+func userList() {
+	db, err := sql.Open("mysql", "root:@/famiphotos_development")
 	if err != nil {
 		panic(err.Error())
 	}
