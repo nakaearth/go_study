@@ -14,6 +14,8 @@ type User struct {
 	Email string `json:"email"`
 }
 
+type Users []User
+
 func main() {
 	e := echo.New()
 
@@ -26,10 +28,10 @@ func main() {
 		return c.JSON(http.StatusOK, getUser(id))
 	})
 
-  e.GET("/users", func(c echo.Context) error {
-    userList()
-    return c.JSON(http.StatusOK, getUser(1))
-  })
+	e.GET("/users", func(c echo.Context) error {
+		userList()
+		return c.JSON(http.StatusOK, getUser(1))
+	})
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
@@ -59,6 +61,8 @@ func userList() {
 		scanArgs[i] = &values[i]
 	}
 
+	var users Users
+
 	for rows.Next() {
 		err = rows.Scan(scanArgs...)
 		if err != nil {
@@ -66,6 +70,7 @@ func userList() {
 		}
 
 		var value string
+		user := User{}
 		for i, col := range values {
 			// Here we can check if the value is nil (NULL value)
 			if col == nil {
@@ -74,7 +79,12 @@ func userList() {
 				value = string(col)
 			}
 			fmt.Println(columns[i], ": ", value)
+
+			if columns[i] == "Email" {
+				user.Email = value
+			}
 		}
+		users = append(users, user)
 		fmt.Println("-----------------------------------")
 	}
 }
